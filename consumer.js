@@ -7,10 +7,11 @@ async function getMsg() {
     const channel = await connection.createChannel();
     await channel.assertExchange(exchangeName, "fanout");
     const asertedQueue = await channel.assertQueue("", { exclusive: true });
-    channel.bindQueue(asertedQueue.queue, (msg) => {
+    channel.bindQueue(asertedQueue.queue , exchangeName , '');
+    channel.consume(asertedQueue.queue , msg=>{
         console.log(msg);
-        channel.ack(msg);
-    });
+        channel.ack(msg)
+    })
 }
 
 getMsg();
